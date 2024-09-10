@@ -19,10 +19,10 @@
         function verifyCaptcha() {
             const userAnswer = document.getElementById('captchaInput').value;
             if (parseInt(userAnswer) === correctAnswer) {
-                alert('CAPTCHA corretto! Ora verrai reindirizzato.');
+                alert('It was easy!');
                 window.location.href = 'mailto:vittorio.mistretta@gmail.com?subject=Contact%20me'; // Inserisci qui l'URL di destinazione
             } else {
-                alert('CAPTCHA errato, riprova.');
+                alert('No way!!');
                 generateCaptcha();  // Genera un nuovo CAPTCHA
             }
         }
@@ -35,8 +35,8 @@
 
     <h1>Verify you are human</h1>
     <p id="captchaQuestion"></p>
-    <input type="text" id="captchaInput" placeholder="Your answer... simple math, calculator not allowed :P">
-    <button onclick="verifyCaptcha()">It was easy</button>
+    <input type="text" id="captchaInput" placeholder="Simple math, calculator not allowed">
+    <button onclick="verifyCaptcha()">I am human</button>
 
 </body>
 </html>
