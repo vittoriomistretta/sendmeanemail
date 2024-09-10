@@ -5,33 +5,26 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Redirecting to email...</title>
 
-        <!-- Aggiungi la libreria reCAPTCHA di Google -->
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <!-- Aggiungi la libreria reCAPTCHA v3 -->
+        <script src="https://www.google.com/recaptcha/api.js?render=6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ"></script>
 
         <script>
-            function onSubmit(token) {
-                const response = grecaptcha.getResponse();
-                if (response.length === 0) {
-                    alert('Please, complete the Captcha.');
-                } else {
-                    // CAPTCHA completato correttamente, esegui il reindirizzamento
-                    window.location.href = "mailto:vittorio.mistretta@gmail.com?subject=Contact%20me";
-                }
+            function onSubmit() {
+                grecaptcha.ready(function() {
+                    grecaptcha.execute('6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ', {action: 'submit'}).then(function(token) {
+                        // Qui viene eseguito il reindirizzamento se il token è stato generato correttamente
+                        window.location.href = "mailto:vittorio.mistretta@gmail.com?subject=Contact%20me";
+                    });
+                });
             }
         </script>
     </head>
     <body>
-        <h1>Complete the Captcha to proceed</h1>
+        <h1>Verifica reCAPTCHA per procedere</h1>
 
-        <!-- reCAPTCHA -->
-        <form id="captchaForm">
-            <div class="g-recaptcha" data-sitekey="6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ"></div> <!-- Sostituisci LA_TUA_SITE_KEY con la tua chiave del sito reCAPTCHA -->
-            <br>
-            <button class="g-recaptcha" 
-                    data-sitekey="6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ" 
-                    data-callback='onSubmit'>Verifica e prosegui</button>
-        </form>
+        <!-- Bottone per inviare la richiesta reCAPTCHA -->
+        <button onclick="onSubmit()">Verifica e prosegui</button>
 
-        <p>If you're not automatically redirected, you can <a href="mailto:vittorio.mistretta@gmail.com?subject=Contact%20me">click here</a>.</p>
+        <p>Se non vieni reindirizzato automaticamente, puoi <a href="mailto:vittorio.mistretta@gmail.com?subject=Contact%20me">cliccare questo link</a>.</p>
     </body>
 </html>
