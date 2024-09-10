@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Redirecting to email...</title>
+
+        <!-- Aggiungi la libreria reCAPTCHA di Google -->
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+        <script>
+            function onSubmit(token) {
+                const response = grecaptcha.getResponse();
+                if (response.length === 0) {
+                    alert('Please, complete the Captcha.');
+                } else {
+                    // CAPTCHA completato correttamente, esegui il reindirizzamento
+                    window.location.href = "mailto:vittorio.mistretta@gmail.com?subject=Contact%20me";
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <h1>Complete the Captcha to proceed</h1>
+
+        <!-- reCAPTCHA -->
+        <form id="captchaForm">
+            <div class="g-recaptcha" data-sitekey="6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ"></div> <!-- Sostituisci LA_TUA_SITE_KEY con la tua chiave del sito reCAPTCHA -->
+            <br>
+            <button class="g-recaptcha" 
+                    data-sitekey="6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ" 
+                    data-callback='onSubmit'>Verifica e prosegui</button>
+        </form>
+
+        <p>If you're not automatically redirected, you can <a href="mailto:vittorio.mistretta@gmail.com?subject=Contact%20me">click here</a>.</p>
+    </body>
+</html>
