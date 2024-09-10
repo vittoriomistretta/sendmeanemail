@@ -22,7 +22,7 @@
                 alert('It was easy!');
                 window.location.href = 'mailto:vittorio.mistretta@gmail.com?subject=Contact%20me'; // Inserisci qui l'URL di destinazione
             } else {
-                alert('No way!!');
+                alert('No way!! Retry');
                 generateCaptcha();  // Genera un nuovo CAPTCHA
             }
         }
@@ -35,7 +35,7 @@
 
     <h1>Verify you are human</h1>
     <p id="captchaQuestion"></p>
-    <input type="text" id="captchaInput" placeholder="Simple math, calculator not allowed">
+    <input type="text" id="captchaInput" placeholder="Your answer">
     <button onclick="verifyCaptcha()">I am human</button>
 
 </body>
