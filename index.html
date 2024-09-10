@@ -1,53 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Redirecting to email...</title>
-
-    <!-- Carica la libreria reCAPTCHA v3 -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ"></script>
-
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPTCHA prima del reindirizzamento</title>
     <script>
-      function onSubmit() {
-        grecaptcha.ready(function () {
-          grecaptcha
-            .execute('6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ', { action: 'submit' })
-            .then(function (token) {
-              // Invia il token al server per la verifica
-              fetch('/verify-recaptcha', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  token: token,
-                }),
-              })
-                .then(response => response.json())
-                .then(data => {
-                  if (data.success) {
-                    // Reindirizza solo se la verifica è riuscita
-                    window.location.href = 'mailto:vittorio.mistretta@gmail.com?subject=Contact%20me';
-                  } else {
-                    alert('Verifica CAPTCHA fallita. Riprova.');
-                  }
-                })
-                .catch(error => {
-                  console.error('Errore nella verifica CAPTCHA:', error);
-                });
-            });
-        });
-      }
+        let num1, num2, correctAnswer;
+
+        // Funzione per generare il CAPTCHA
+        function generateCaptcha() {
+            num1 = Math.floor(Math.random() * 10);
+            num2 = Math.floor(Math.random() * 10);
+            correctAnswer = num1 + num2;
+            document.getElementById('captchaQuestion').textContent = `${num1} + ${num2} = ?`;
+        }
+
+        // Funzione per verificare la risposta
+        function verifyCaptcha() {
+            const userAnswer = document.getElementById('captchaInput').value;
+            if (parseInt(userAnswer) === correctAnswer) {
+                alert('CAPTCHA corretto! Ora verrai reindirizzato.');
+                window.location.href = "https://www.tuosito.com"; // Inserisci qui l'URL di destinazione
+            } else {
+                alert('CAPTCHA errato, riprova.');
+                generateCaptcha();  // Genera un nuovo CAPTCHA
+            }
+        }
+
+        // Genera il CAPTCHA al caricamento della pagina
+        window.onload = generateCaptcha;
     </script>
-  </head>
+</head>
+<body>
 
-  <body>
-    <h1>Verifica CAPTCHA per procedere</h1>
+    <h1>Completa il CAPTCHA prima di proseguire</h1>
+    <p id="captchaQuestion"></p>
+    <input type="text" id="captchaInput" placeholder="Inserisci la tua risposta">
+    <button onclick="verifyCaptcha()">Verifica</button>
 
-    <!-- Bottone per inviare la richiesta reCAPTCHA -->
-    <button onclick="onSubmit()">Verifica e prosegui</button>
-
-    <p>Se non vieni reindirizzato automaticamente, puoi <a href="mailto:vittorio.mistretta@gmail.com?subject=Contact%20me">cliccare questo link</a>.</p>
-  </body>
+</body>
 </html>
