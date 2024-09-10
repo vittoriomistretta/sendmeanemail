@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Redirecting to email...</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting to email...</title>
 
-        <!-- Aggiungi la libreria reCAPTCHA v3 -->
-        <script src="https://www.google.com/recaptcha/api.js?render=6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ"></script>
+    <!-- Carica la libreria reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ"></script>
 
-        <script>
-            function onSubmit() {
-                grecaptcha.ready(function() {
-                    grecaptcha.execute('6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ', {action: 'submit'}).then(function(token) {
-                        // Qui viene eseguito il reindirizzamento se il token è stato generato correttamente
-                        window.location.href = "mailto:vittorio.mistretta@gmail.com?subject=Contact%20me";
-                    });
+    <script>
+      function onSubmit() {
+        grecaptcha.ready(function () {
+          grecaptcha
+            .execute('6LeK8DwqAAAAABbPpEGuDeRxTR6CWZmxSoR9I5ZZ', { action: 'submit' })
+            .then(function (token) {
+              // Invia il token al server per la verifica
+              fetch('/verify-recaptcha', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  token: token,
+                }),
+              })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    // Reindirizza solo se la verifica è riuscita
+                    window.location.href = 'mailto:vittorio.mistretta@gmail.com?subject=Contact%20me';
+                  } else {
+                    alert('Verifica CAPTCHA fallita. Riprova.');
+                  }
+                })
+                .catch(error => {
+                  console.error('Errore nella verifica CAPTCHA:', error);
                 });
-            }
-        </script>
-    </head>
-    <body>
-        <h1>Verifica reCAPTCHA per procedere</h1>
+            });
+        });
+      }
+    </script>
+  </head>
 
-        <!-- Bottone per inviare la richiesta reCAPTCHA -->
-        <button onclick="onSubmit()">Verifica e prosegui</button>
+  <body>
+    <h1>Verifica CAPTCHA per procedere</h1>
 
-        <p>Se non vieni reindirizzato automaticamente, puoi <a href="mailto:vittorio.mistretta@gmail.com?subject=Contact%20me">cliccare questo link</a>.</p>
-    </body>
+    <!-- Bottone per inviare la richiesta reCAPTCHA -->
+    <button onclick="onSubmit()">Verifica e prosegui</button>
+
+    <p>Se non vieni reindirizzato automaticamente, puoi <a href="mailto:vittorio.mistretta@gmail.com?subject=Contact%20me">cliccare questo link</a>.</p>
+  </body>
 </html>
